@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HiddenSearchBar</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://kit.fontawesome.com/e0f2a7df31.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="main">
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">FRUITS</h2>
+            </div>
+
+            <div class="menu">
+                <ul>
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">ABOUT</a></li>
+                    <li><a href="#">SERVICE</a></li>
+                    <li><a href="#">REPORT</a></li>
+                </ul>
+            </div>
+
+            <div class="search">
+                <div id="cover" >
+                    <input type="text" placeholder="Search" id="input" onchange="Getimages()">
+                     <i class="fa-solid fa-magnifying-glass"  style="color: #fff; font-size: 25px;"   onclick="show()"></i>
+                 </div>
+            </div>
+
+        </div> 
+        <!-- ----------------------------------------------------------------------------------------------------   -->
+        <div class="content" id="Enable_show">
+            
+                <h1>Regular cuisine & <br><span>Special cuisine</span> <br>Dishes</h1>
+                <p class="par">There are different types of regions and every region have unique food. <br> Every food item has a unique taste.
+                <br>are you ready to enjoy the food?<br>
+                We are providing the 3 fruits namely mango,apple,peach
+                <br>
+                So please select any one.
+            </p>
+
+                    <div class="icons">
+                        <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+                        <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+                        <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+                        <a href="#"><ion-icon name="logo-google"></ion-icon></a>
+                        <a href="#"><ion-icon name="logo-skype"></ion-icon></a>
+                    </div>
+
+                </div>
+        </div>
+        <div id="Show_apple">
+            <img src="https://thumbs.dreamstime.com/b/red-apple-leaf-slice-white-background-29914331.jpg" class="image_sizing">
+            
+        </div>
+        <div id="Show_mango">
+            <img src="https://t4.ftcdn.net/jpg/02/71/66/91/360_F_271669174_2dHs4FO3SV83lQ4MjswEBa4LQTGjMO4E.jpg" width="800px" height="100%">
+       
+        </div>
+        <div id="Show_peach">
+           
+            <img src="https://img.freepik.com/premium-photo/fresh-peach-with-leaf-isolated-white-with-clipping-path_299651-19.jpg" width="800px" >
+           
+        </div>
+
+        <!-- --------------------------------------------------------------------------------------  -->
+       
+
+
+
+    </div>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <script>
+
+         input =  document.getElementById("input").style;
+       input.display="none";
+       let toggle = true
+       function show(){
+        
+        if(toggle){
+        input.display="block";
+        input.width="250px"
+        document.getElementById("cover").style.width="300px"
+        document.getElementById("cover").style.height="20px"
+        toggle = (!toggle)
+        }
+        else{
+            input.display="none";
+            document.getElementById("cover").style.width="25px"
+        toggle = (!toggle)
+        }
+       }
+
+
+       function Getimages(){
+        let imageName = document.getElementById('input').value;
+        imageName =  imageName.toLowerCase()
+        console.log(imageName)
+        if(imageName.length == 0){
+            document.getElementById('Enable_show').style.display = 'block';
+            document.getElementById('Show_apple').style.display="none";
+            document.getElementById('Show_mango').style.display="none"; 
+            document.getElementById('Show_peach').style.display="none";   
+        }
+        if(imageName == "apple"){
+            document.getElementById('Show_apple').style.display="block";
+            document.getElementById('Enable_show').style.display="none";
+            document.getElementById('Show_peach').style.display="none"; 
+            document.getElementById('Show_mango').style.display="none"; 
+        }
+        else if(imageName == "mango"){
+            document.getElementById('Show_mango').style.display="block";  
+            document.getElementById('Enable_show').style.display="none";
+            document.getElementById('Show_peach').style.display="none";  
+            document.getElementById('Show_apple').style.display="none";
+        }
+        else if(imageName == "peach"){
+            document.getElementById('Show_peach').style.display="block"; 
+            document.getElementById('Show_mango').style.display="none"; 
+            document.getElementById('Show_apple').style.display="none";
+            document.getElementById('Enable_show').style.display="none";
+        }
+        else{
+            document.getElementById('Enable_show').style.display = 'block';
+            document.getElementById('Show_apple').style.display="none";
+            document.getElementById('Show_mango').style.display="none"; 
+            document.getElementById('Show_peach').style.display="none"; 
+
+        }
+        addFruitToDatabase();
+        
+       }
+       async function addFruitToDatabase() {
+            let fruitName = document.getElementById('input').value;
+            fruitName = fruitName.toLowerCase();
+
+            fetch('http://localhost:3000/addfruit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: fruitName }),
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
